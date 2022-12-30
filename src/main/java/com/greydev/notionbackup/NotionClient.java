@@ -39,6 +39,7 @@ public class NotionClient {
 	private static final String KEY_NOTION_SPACE_ID = "NOTION_SPACE_ID";
 	private static final String KEY_NOTION_EMAIL = "NOTION_EMAIL";
 	private static final String KEY_NOTION_PASSWORD = "NOTION_PASSWORD";
+	private static final String KEY_NOTION_TOKEN = "NOTION_TOKEN";
 	private static final String KEY_NOTION_EXPORT_TYPE = "NOTION_EXPORT_TYPE";
 	private static final String KEY_NOTION_FLATTEN_EXPORT_FILETREE = "NOTION_FLATTEN_EXPORT_FILETREE";
 	private static final String DEFAULT_NOTION_EXPORT_TYPE = "markdown";
@@ -49,6 +50,7 @@ public class NotionClient {
 	private final String notionSpaceId;
 	private final String notionEmail;
 	private final String notionPassword;
+	private final String notionToken;
 	private final String exportType;
 	private final boolean flattenExportFiletree;
 	private String downloadsDirectoryPath;
@@ -67,6 +69,7 @@ public class NotionClient {
 		notionSpaceId = dotenv.get(KEY_NOTION_SPACE_ID);
 		notionEmail = dotenv.get(KEY_NOTION_EMAIL);
 		notionPassword = dotenv.get(KEY_NOTION_PASSWORD);
+		notionToken = dotenv.get(KEY_NOTION_TOKEN);
 		downloadsDirectoryPath = dotenv.get(KEY_DOWNLOADS_DIRECTORY_PATH);
 
 		if (StringUtils.isBlank(downloadsDirectoryPath)) {
@@ -166,6 +169,10 @@ public class NotionClient {
 
 	// TODO create gist
 	private Optional<String> getTokenV2() throws IOException, InterruptedException {
+		if (StringUtils.isNotBlank(notionToken)) {
+			return Optional.of(notionToken);
+		}
+
 		String credentialsTemplate = "{" +
 				"\"email\": \"%s\"," +
 				"\"password\": \"%s\"" +
